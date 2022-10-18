@@ -15,7 +15,7 @@ def create_table():
         with psycopg2.connect(
                 database='postgres',
                 user='postgres',
-                password='23gbe9fcmb.',
+                password='12345',
                 port=5432
         ) as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -40,7 +40,7 @@ def insert_into_table():
     with psycopg2.connect(
                 database='postgres',
                 user='postgres',
-                password='23gbe9fcmb.',
+                password='12345',
                 port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "INSERT INTO billboard (id, artist, song, genre, ranking) VALUES (%s, %s, %s, %s, %s)"
@@ -68,7 +68,7 @@ def view_in_pandas():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT * FROM billboard"
@@ -85,7 +85,7 @@ def view_columns():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT * FROM billboard"
@@ -100,7 +100,7 @@ def update_vote(vote, i_d):     # Condition to ask if user wants to vote functio
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             if vote == 1:
@@ -114,7 +114,7 @@ def top_10():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             view_script = "SELECT * FROM billboard ORDER BY ranking DESC LIMIT 10"
@@ -131,7 +131,7 @@ def condition_id(i_d):
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432
     ) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -176,7 +176,7 @@ def visualize():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432
     ) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -198,7 +198,7 @@ def check_for_existing_song():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT song from billboard"
@@ -212,7 +212,7 @@ def check_for_existing_artist():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='23gbe9fcmb.',
+            password='12345',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT artist from billboard"
@@ -220,12 +220,6 @@ def check_for_existing_artist():
             fetch = cur.fetchall()
             artist = [i[0] for i in fetch]
             return artist
-
-
-database = 'postgresql'
-port = 5432
-localhost = 'postgres'
-password = "23gbe9fcmb."
 
 
 selection = int(input("""-----------------------------------------
