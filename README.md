@@ -16,10 +16,9 @@
 ### Setup
 To run any of the projects is easy just have installed the libraries
 
-'''
+
 * pandas
 * numpy
 * psycopg2
 * seaborn
 * matplotlib
-'''
