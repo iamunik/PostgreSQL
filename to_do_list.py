@@ -12,7 +12,7 @@ def todo_list():
             with psycopg2.connect(
                 database='postgres',
                 user='postgres',
-                password='23gbe9fcmb.',
+                password='12345',
                 port=5432
             ) as conn:
                 with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
