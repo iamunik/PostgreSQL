@@ -55,12 +55,15 @@ def insert_into_table():
                 genre = input('The Genre\n-> ').title()
                 if song in check_for_existing_song() and artist in check_for_existing_artist():
                     print("Cannot add to billboard\nArtist and song already exists")
-                    break
+                    d = input("Press enter to continue\nPress '.' to terminate\n-> ")
+                    if d == '.':
+                        print("Insertion Terminated!!!.")
                 else:
                     ranking = 30
                     new_value = (random_id, artist, song, genre, ranking)
                     cur.execute(new_script, new_value)
                     d = input("Press enter to continue\nPress '.' to terminate\n-> ")
+                    print("Details added\nInsertion Completed!!!")
     conn.close()
 
 
@@ -240,23 +243,26 @@ To visualize the data (bar chart)           Press 4
 To quit                                     Press 5
 -----------------------------------------------------------------------------------\n-> """))
 
+# Having a little issue with sql_alchemy, I am still working on understanding its implementation
+# Once I fully grasp it, I will make necessary changes to the project file.
 
 if selection == 5:
     print("Thanks for at least viewing it")
 elif selection == 1:
     view_in_pandas()  # Function defined to view the database with pandas.
-    pass
+
+# Function defined to insert into the table || Condition to check of songs exists has been implemented
 elif selection == 2:
-    insert_into_table()  # Function defined to insert into the table ||
-    pass                 # Condition to check of songs exists has not been implemented
+    insert_into_table()
+
 elif selection == 3:
-    up_vote = int(input(f"Pick your condition number...\n{top_10()}\n->"))  # WIP
+    up_vote = int(input(f"Pick your condition number...\n{top_10()}\n->"))  # Work In Progress
     c = condition_id(up_vote)
     print(c[0])
     update_vote(1, c[0])
-    pass
+
 elif selection == 4:
     visualize()     # Brief visualization with seaborn.
-    pass
+
 else:
     print("Wrong selection")
