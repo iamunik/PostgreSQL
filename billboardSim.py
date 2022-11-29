@@ -10,7 +10,7 @@ saeun = "A a B b C c D d E e F f G g H h I i L l J j K k M m N n O o P p Q q R r
 seun_id = saeun.split()
 
 
-def create_table():
+def create_table():     # Function to create database table
     try:
         with psycopg2.connect(
                 database='postgres',
@@ -36,7 +36,7 @@ def create_table():
         print("Task be completed")
 
 
-def insert_into_table():
+def insert_into_table():        # Inserting Values into the table
     with psycopg2.connect(
                 database='postgres',
                 user='postgres',
@@ -67,7 +67,7 @@ def insert_into_table():
     conn.close()
 
 
-def view_in_pandas():
+def view_in_pandas():       # Viewing the database using pandas
     with psycopg2.connect(
             database='postgres',
             user='postgres',
@@ -84,7 +84,7 @@ def view_in_pandas():
     conn.close()
 
 
-def view_columns():
+def view_columns():     # Viewing the columns of the database
     with psycopg2.connect(
             database='postgres',
             user='postgres',
