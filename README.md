@@ -9,10 +9,10 @@ This repository contains all my training projects that uses postgreSQL as its da
 * Pandas
 
 ### How to setup this project;
-<ul> To run this project after pulling it you just need to install the following libraries;
-<li> pandas
-<li> psycopg2
-</ul>
+To run this project after pulling it you just need to install the following libraries;
+* pandas
+* psycopg2
+
 
 <h3>A billboard simulator</h3> also using postgres as its database, using basic CRUD operations users can vote for their preferred artist, and also add their artist if he is not on the list of artists in the database, a random id (primary key) is generated for each artist, and also visualisation with seaborn to get an idea of the top 10 artist even without viewing the database with pandas. **Name of project (billboardSim.py)**
 
