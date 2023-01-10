@@ -1,3 +1,4 @@
+import string
 import numpy as np
 import pandas as pd
 import psycopg2.extras
@@ -5,9 +6,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set()
 
-saeun = "A a B b C c D d E e F f G g H h I i L l J j K k M m N n O o P p Q q R r S s T t U u v V w W X x Y y Z z"\
-    "1 2 3 4 5 6 7 8 9 0 ! @ # * . ,"
-seun_id = saeun.split()
+id_str = string.printable
+new_id = [i for i in id_str[:-6]]
 
 
 def create_table():     # Function to create database table
@@ -47,7 +47,7 @@ def insert_into_table():        # Inserting Values into the table
             d = ''
 
             while d != ".":
-                random_alpha_num_sym = [np.random.choice(seun_id, 5)]
+                random_alpha_num_sym = [np.random.choice(new_id, 5)]
                 random_id = "id_" + "".join(random_alpha_num_sym[0])
                 print("Enter the details below")
                 song = input("The Song\n-> ").title()
