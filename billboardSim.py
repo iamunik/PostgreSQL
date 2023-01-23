@@ -1,9 +1,13 @@
 import string
+import sys
+
 import numpy as np
 import pandas as pd
 import psycopg2.extras
 import seaborn as sns
 import matplotlib.pyplot as plt
+import sqlalchemy
+from sqlalchemy.sql import text
 sns.set()
 
 id_str = string.printable
@@ -68,42 +72,35 @@ def insert_into_table():        # Inserting Values into the table
 
 
 def view_in_pandas():       # Viewing the database using pandas
-    with psycopg2.connect(
-            database='postgres',
-            user='postgres',
-            password='12345',
-            port=5432) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            new_script = "SELECT * FROM billboard"
-            cur.execute(new_script)
-            collon = [i[0] for i in cur.description]
-            read = pd.read_sql_query("SELECT * FROM billboard", conn)
-            cur.close()
-            info = pd.DataFrame(read, columns=collon, index=None)
-            print(info)
-    conn.close()
+    url = 'postgresql+psycopg2://postgres:23gbe9fcmb.@localhost:5432/postgres'
+    engine = sqlalchemy.create_engine(url)
+    new_script = "SELECT * FROM billboard"
+    with engine.connect().execution_options(autocommit=True) as conn:
+        red = conn.execute(text(new_script))
+        read = pd.DataFrame(red.fetchall())
+        print(read)
 
 
-def view_columns():     # Viewing the columns of the database
-    with psycopg2.connect(
-            database='postgres',
-            user='postgres',
-            password='12345',
-            port=5432) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            new_script = "SELECT * FROM billboard"
-            cur.execute(new_script)
-            coll = [i[0] for i in cur.description]
-            for i in coll:
-                print(i)
-    conn.close()
+# def view_columns():     # Viewing the columns of the database
+#     with psycopg2.connect(
+#             database='postgres',
+#             user='postgres',
+#             password='23gbe9fcmb.',
+#             port=5432) as conn:
+#         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+#             new_script = "SELECT * FROM billboard"
+#             cur.execute(new_script)
+#             coll = [i[0] for i in cur.description]
+#             for i in coll:
+#                 print(i)
+#     conn.close()
 
 
 def update_vote(vote, i_d):     # Condition to ask if user wants to vote function should be placed in code
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='12345',
+            password='23gbe9fcmb.',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             if vote == 1:
@@ -113,20 +110,15 @@ def update_vote(vote, i_d):     # Condition to ask if user wants to vote functio
                 print("Thanks for your time")
 
 
+# I used SQLAlchemy to pass this database into a pandas function
 def top_10():
-    with psycopg2.connect(
-            database='postgres',
-            user='postgres',
-            password='12345',
-            port=5432) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-            view_script = "SELECT * FROM billboard ORDER BY ranking DESC LIMIT 10"
-            cur.execute(view_script)
-            read = pd.read_sql_query(view_script, conn)
-            cur.close()
-            collon = [i[0] for i in cur.description]
-            info = pd.DataFrame(read, columns=collon, index=None)
-            print(info)
+    url = 'postgresql+psycopg2://postgres:23gbe9fcmb.@localhost:5432/postgres'
+    engine = sqlalchemy.create_engine(url)
+    view_script = "SELECT * FROM billboard ORDER BY ranking DESC LIMIT 10"
+    with engine.connect().execution_options(autocommit=True) as conn:
+        red = conn.execute(text(view_script))
+        read = pd.DataFrame(red.fetchall(), index=[i for i in range(1, 11)])
+        return read
 
 
 # Conditions for voting it returns your selected ID this will be stored in a variable and put into the update function
@@ -134,7 +126,7 @@ def condition_id(i_d):
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='12345',
+            password='23gbe9fcmb.',
             port=5432
     ) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -172,14 +164,15 @@ def condition_id(i_d):
                 i_d = cur.fetchall()[9]
                 return i_d
             else:
-                return "Wrong Selection"
+                print("Wrong Selection")
+                sys.exit()
 
 
 def visualize():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='12345',
+            password='23gbe9fcmb.',
             port=5432
     ) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -201,7 +194,7 @@ def check_for_existing_song():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='12345',
+            password='23gbe9fcmb.',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT song from billboard"
@@ -215,7 +208,7 @@ def check_for_existing_artist():
     with psycopg2.connect(
             database='postgres',
             user='postgres',
-            password='12345',
+            password='23gbe9fcmb.',
             port=5432) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
             new_script = "SELECT artist from billboard"
@@ -243,9 +236,6 @@ To visualize the data (bar chart)           Press 4
 To quit                                     Press 5
 -----------------------------------------------------------------------------------\n-> """))
 
-# Having a little issue with sql_alchemy, I am still working on understanding its implementation
-# Once I fully grasp it, I will make necessary changes to the project file.
-
 if selection == 5:
     print("Thanks for at least viewing it")
 elif selection == 1:
@@ -255,14 +245,16 @@ elif selection == 1:
 elif selection == 2:
     insert_into_table()
 
-elif selection == 3:
-    up_vote = int(input(f"Pick your condition number...\n{top_10()}\n->"))  # Work In Progress
+elif selection == 3:    # Update votes
+    up_vote = int(input(f"Select your preferred vote by number...\n{top_10()}\n-> "))
     c = condition_id(up_vote)
     print(c[0])
     update_vote(1, c[0])
+    print('Vote updated')
 
 elif selection == 4:
     visualize()     # Brief visualization with seaborn.
 
 else:
     print("Wrong selection")
+
