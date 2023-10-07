@@ -29,7 +29,4 @@ To run this project after pulling it you just need to ensure that the above libr
 
 ### How to setup this project;
 To run this project after pulling it you just need to ensure that the above libraries are installed on work environment of your choice.
-<br><hr>
-<div style="text-align: center;">
-<a href="https://oluwaseun-ogundeko.netlify.app/">Learn more about me!</a>
-</div>
+<hr>
